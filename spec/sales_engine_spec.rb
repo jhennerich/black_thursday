@@ -12,14 +12,18 @@ let(:se) {SalesEngine.from_csv({:items=> "./data/items.csv", :merchants => "./da
     end
 
     it 'has / can read merchants' do
-
-
-      expect(se.merchants).to be("./data/merchants.csv")
+      se
+      expect(SalesEngine.merchants.length).to eq(475)
     end
 
     it 'has / can read items' do
+      se
+      expect(SalesEngine.items.length).to eq(1367)
+    end
 
-      expect(se.items).to be("./data/items.csv")
+    it 'has #find_by_id' do
+      se
+      expect(SalesEngine.find_by_id('263395237')).to eq true
     end
   end
 end
