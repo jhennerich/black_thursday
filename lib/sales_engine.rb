@@ -8,6 +8,7 @@ class SalesEngine
 
     @items = []
     @items = CSV.read(argument[:items], headers: true, header_converters: :symbol)
+    binding.pry
 
     @merchants = []
     @merchants = CSV.read(argument[:merchants], headers: true, header_converters: :symbol)
@@ -25,11 +26,11 @@ class SalesEngine
   def self.find_by_id(id)
     result = []
     @items.find_all do |element|
+      @binding.pry
       if element[:id] == id
 #        puts "found id #{id}"
         return true
 ##        result << element
-#      binding.pry
       end
     end
 #    return result

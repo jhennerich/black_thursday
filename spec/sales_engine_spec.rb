@@ -13,6 +13,7 @@ let(:se) {SalesEngine.from_csv({:items=> "./data/items.csv", :merchants => "./da
 
     it 'has / can read merchants' do
       se
+      binding.pry
       expect(SalesEngine.merchants.length).to eq(475)
     end
 
