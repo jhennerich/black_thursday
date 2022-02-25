@@ -1,33 +1,32 @@
+require_relative '../lib/sales_engine'
 require_relative '../lib/merchant_repository'
 require_relative 'spec_helper'
 require 'pry'
 
 RSpec.describe MerchantRepository do
 
-  before(:each) do
-      @merchant1  = Merchant.new({id: "12334105",
-                              name: "Shopin1901",
-                              created_at: "2010-12-10",
-                              updated_at: "2011-12-04"
-                  })
-      @merchant2 = Merchant.new({id: "12334106",
-                              name: "Shopin1901",
-                              created_at: "2010-12-10",
-                              updated_at: "2011-12-04"
-                  })
-
-      @merchants = MerchantRepository.new([@merchant1, @merchant2])
-  end
-
-
+   before(:each) do
+     @se = SalesEngine.from_csv({ :items => "./data/items.csv",
+                                 :merchants => "./data/merchants.csv"})
+     @mr = MerchantRepository.new(@se[1])
+   end
 
   it "exist" do
-    expect(@merchants).to be_a(MerchantRepository)
+    expect(@mr).to be_a(MerchantRepository)
   end
 
   it "holds #all merchant data" do
-    # binding.binding.pry
-    expect(@merchants.all.count).to eq(2)
+
+    expect(@mr.all.count).to eq(475)
   end
+
+  it "#find_by_id finds a merchant by id" do
+
+    id = 12335971
+    merchant = @mr.find_by_id(id)
+    expect(merchant.id).to eq(id)
+    expect(merchant.name).to eq "ivegreenleaves"
+  end
+
 
 end
