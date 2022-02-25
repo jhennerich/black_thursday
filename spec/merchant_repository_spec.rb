@@ -21,7 +21,7 @@ RSpec.describe MerchantRepository do
 
     expect(@mr.all.count).to eq(475)
   end
-
+  
   it "#find_by_id finds a merchant by id" do
 
     id = 12335971
