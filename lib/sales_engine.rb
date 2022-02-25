@@ -1,15 +1,28 @@
 require 'csv'
 require 'pry'
+require_relative '../lib/merchant'
+require_relative '../lib/item'
 
 class SalesEngine
   attr_reader :items, :merchants
 
   def self.from_csv(argument)
-    @merchants = []
-    @merchants = CSV.read(argument[:merchants], headers: true, header_converters: :symbol)
     @items = []
-    @items = CSV.read(argument[:items], headers: true, header_converters: :symbol)
+    CSV.foreach(argument[:items], headers: true, header_converters: :symbol) do |row| header ||= row.headers
+        @items << Item.new(row)
+      end
+    @merchants = []
+    CSV.foreach(argument[:merchants], headers: true, header_converters: :symbol) do |row| header ||= row.headers
+        @merchants << Merchant.new(row)
+      end
     [@items, @merchants]
   end
 
+  def self.items
+    @items
+  end
+
+  def self.merchants
+    @merchants
+  end
 end
