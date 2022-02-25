@@ -6,6 +6,7 @@ class MerchantRepository
     def initialize(merchant_csv_file)
       @merchants = []
       create_merchants(merchant_csv_file)
+      return @merchants
     end
 
     def create_merchants(merchant_csv_file)
