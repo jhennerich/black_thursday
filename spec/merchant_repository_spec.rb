@@ -8,10 +8,12 @@ RSpec.describe MerchantRepository do
    before(:each) do
      @se = SalesEngine.from_csv({ :items => "./data/items.csv",
                                  :merchants => "./data/merchants.csv"})
-     @mr = MerchantRepository.new(@se[1])
+
+    @mr = MerchantRepository.new("./data/merchants.csv")
    end
 
   it "exist" do
+    mr = MerchantRepository.new("./data/merchants.csv")
     expect(@mr).to be_a(MerchantRepository)
   end
 
@@ -28,5 +30,11 @@ RSpec.describe MerchantRepository do
     expect(merchant.name).to eq "ivegreenleaves"
   end
 
+  it "#find_by_id returns nil if the merchant does not exist" do
 
+      id = 101
+      merchant = @mr.find_by_id(id)
+
+      expect(merchant).to eq nil
+    end
 end

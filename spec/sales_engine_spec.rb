@@ -10,15 +10,14 @@ RSpec.describe SalesEngine do
       expect(sales_engine).to be_a(SalesEngine)
     end
 
-    it '#items has / can read item info' do
+    xit '#items has / can read item info' do
       SalesEngine.from_csv({:items=> "./data/items.csv",
                             :merchants => "./data/merchants.csv"})
       expect(SalesEngine.items.count).to eq(1367)
 #      expect(se[0].count).to eq(1367)
     end
     it '#merchants has / can read merchant info' do
-      expect(SalesEngine.merchants.count).to eq(475)
-#      expect(se[1].count).to eq(475)
+      expect(se.merchants.length).to eq(475)
     end
 
   end

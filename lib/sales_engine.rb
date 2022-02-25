@@ -1,28 +1,28 @@
 require 'csv'
 require 'pry'
-require_relative '../lib/merchant'
-require_relative '../lib/item'
+require_relative '../lib/merchant_repository'
 
 class SalesEngine
-  attr_reader :items, :merchants
+#  attr_reader :items, :merchants
+  def initialize()
+    @merchant_array = []
+    @items_array = []
+  end
 
   def self.from_csv(argument)
-    @items = []
-    CSV.foreach(argument[:items], headers: true, header_converters: :symbol) do |row| header ||= row.headers
-        @items << Item.new(row)
+    argument.each do |key, value|
+      if key == :merchants
+        @merchants_array = MerchantRepository.new(value)
+        return @merchants_array
+      elsif key == :items
+#        @items_array = ItemsRepository.new(value)
+#        return @items_array
       end
-    @merchants = []
-    CSV.foreach(argument[:merchants], headers: true, header_converters: :symbol) do |row| header ||= row.headers
-        @merchants << Merchant.new(row)
-      end
-    [@items, @merchants]
+    end
   end
-
-  def self.items
-    @items
-  end
-
-  def self.merchants
-    @merchants
-  end
+###
+# Need to move to ItemsRepository
+#    CSV.foreach(argument[:items], headers: true, header_converters: :symbol) do |row| header ||= row.headers
+#        @items << Item.new(row)
+#      end
 end
