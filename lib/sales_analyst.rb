@@ -139,4 +139,10 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
     end
     ((invoice_status[status].to_f / @invoices.all.count) * 100).round(2)
   end
+
+  def invoice_paid_in_full?(invoice_id)
+    @transactions.find_all_by_invoice_id(invoice_id).map {|transaction| transaction.result}.all?(:success)
+  end
+
+
 end

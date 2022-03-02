@@ -82,5 +82,9 @@ context 'iteration 1' do
         pending_percentage = @analyst.invoice_status(:pending)
         expect(pending_percentage).to eq 29.55
       end
+
+      it 'checks whether invoice is paied in full' do
+        expect(@analyst.invoice_paid_in_full?(1)).to be true
+      end
     end
   end
