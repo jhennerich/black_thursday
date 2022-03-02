@@ -12,5 +12,4 @@ class Merchant
     @updated_at = info[:updated_at]
   end
 
-
 end

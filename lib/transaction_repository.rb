@@ -28,9 +28,6 @@ class TransactionRepository < Repository
     if item_to_update != nil
         attributes.each do |key, value|
           if ![:id, :invoice_id, :created_at].include?(key)
-            ###
-            #look into more
-            ###
             item_to_update.result = value
             item_to_update.updated_at = (Time.now + 1)
           end
@@ -47,6 +44,5 @@ class TransactionRepository < Repository
     @transactions.find_all do |item|
       item.result == result
     end
-#      binding.pry
   end
 end

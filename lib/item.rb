@@ -26,7 +26,7 @@ class Item
   end
 
   def unit_price
-        unit_price = BigDecimal(@info[:unit_price], 5)
+    unit_price = BigDecimal(@info[:unit_price], 5)
   end
 
   def merchant_id
