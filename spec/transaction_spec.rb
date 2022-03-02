@@ -19,7 +19,7 @@ RSpec.describe Transaction do
     expect(@transaction.invoice_id).to eq(2179)
     expect(@transaction.credit_card_number).to eq("4068631943231473")
     expect(@transaction.credit_card_expiration_date).to eq("0217")
-    expect(@transaction.result).to eq("success")
+    expect(@transaction.result).to eq(:success)
     expect(@transaction.created_at).to eq(Time.parse("2012-02-26 20:56:56 UTC"))
     expect(@transaction.updated_at).to eq(Time.parse("2012-02-26 20:56:56 UTC"))
   end

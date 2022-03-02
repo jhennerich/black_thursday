@@ -8,13 +8,14 @@ require 'pry'
 
 class SalesAnalyst
 attr_reader :item_num, :items, :merchants, :customers, :invoice_items
-  def initialize(merchants, items, invoices, invoice_items, customers)
+  def initialize(merchants, items, invoices, invoice_items, customers, transactions)
     @merchants = merchants
     @items = items
     @invoices = invoices
     @invoice_items = invoice_items
     @customers = customers
     @item_num = []
+    @transactions = transactions
     @standard_deviation = 0
   end
 
