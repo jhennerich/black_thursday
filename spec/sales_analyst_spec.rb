@@ -101,7 +101,10 @@ context 'iteration 1' do
             expect(@analyst.total_revenue_by_date(date)).to eq 21067.77
         end
 
-
+        it 'returns the top x merchants ranked by revenue' do
+          expect(@analyst.top_revenue_earners(10).length).to eq 10
+          expect(@analyst.top_revenue_earners.sample).to be_a Merchant
+        end
 
       end
   end

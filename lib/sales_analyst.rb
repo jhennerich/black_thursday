@@ -152,9 +152,22 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
 
   def total_revenue_by_date(date)
     invoice_id = @invoices.all.find_all {|invoice| invoice.created_at.to_s[0..9] == date.to_s[0..9]}[0].info[:id].to_i
-    # require 'pry'; binding.pry
     invoice_total(invoice_id)
   end
 
 
+  def top_revenue_earners(x=20)
+    merchant_and_revenue = Hash.new(0)
+    @merchants.all.each {|merchant|
+      @invoices.find_all_by_merchant_id(merchant.id).each {|invoice|
+        if invoice_paid_in_full?(invoice.id)
+          merchant_and_revenue[merchant] += invoice_total(invoice.id)
+        end
+                                                          }
+                        }
+    top_merchants_and_revenue = merchant_and_revenue.sort_by{|k,v| v}[0..x-1]
+    top_merchants_and_revenue.map { |tmr|
+      tmr[0]
+                }
+  end
 end
