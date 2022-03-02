@@ -35,7 +35,7 @@ RSpec.describe TransactionRepository do
   it "#find_all_by_result" do
 
 #    result = :success
-    result = "success"
+    result = :success
     expected = @transactions.find_all_by_result(result)
 
      expect(expected.length).to eq 4158
@@ -43,7 +43,7 @@ RSpec.describe TransactionRepository do
      expect(expected.first.result).to eq result
 
 #     result = :failed
-     result = "failed"
+     result = :failed
      expected = @transactions.find_all_by_result(result)
 
      expect(expected.length).to eq 827

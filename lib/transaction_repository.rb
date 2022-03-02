@@ -41,6 +41,9 @@ class TransactionRepository < Repository
   end
 
   def find_all_by_result(result)
-    @transactions.find_all {|item| item.result.include?(result)}
+    @transactions.find_all do |item|
+      item.result == result
+    end
+#      binding.pry
   end
 end
