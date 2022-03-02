@@ -83,8 +83,12 @@ context 'iteration 1' do
         expect(pending_percentage).to eq 29.55
       end
 
-      it 'checks whether invoice is paied in full' do
+      it 'checks whether invoice is paid in full' do
         expect(@analyst.invoice_paid_in_full?(1)).to be true
+      end
+
+      it 'calculates the total $ amount of the invoice with corresponding invoice id' do
+        expect(@analyst.invoice_total(1)).to eq 21067.77
       end
     end
   end
