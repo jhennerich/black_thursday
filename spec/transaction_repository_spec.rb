@@ -29,12 +29,9 @@ RSpec.describe TransactionRepository do
 
      expect(expected.empty?).to eq true
   end
-# find_all_by_credit_card_number - returns either [] or
-# one or more matches which have a matching credit card number
 
   it "#find_all_by_result" do
 
-#    result = :success
     result = :success
     expected = @transactions.find_all_by_result(result)
 
@@ -42,7 +39,6 @@ RSpec.describe TransactionRepository do
      expect(expected.first.class).to eq Transaction
      expect(expected.first.result).to eq result
 
-#     result = :failed
      result = :failed
      expected = @transactions.find_all_by_result(result)
 
@@ -50,6 +46,40 @@ RSpec.describe TransactionRepository do
      expect(expected.first.class).to eq Transaction
      expect(expected.first.result).to eq result
   end
-#find_all_by_result - returns either []
-# or one or more matches which have a matching status
+
+  it "#update updates a transaction" do
+    attributes = {
+       :invoice_id => 8,
+       :credit_card_number => "4242424242424242",
+       :credit_card_expiration_date => "0220",
+       :result => "success",
+       :created_at => Time.now,
+       :updated_at => Time.now
+     }
+     @transactions.create(attributes)
+
+    original_time = @transactions.find_by_id(4986).updated_at
+      attributes = {
+        result: :failed
+    }
+    @transactions.update(4986, attributes)
+    expected = @transactions.find_by_id(4986)
+    expect(expected.result).to eq :failed
+    expect(expected.credit_card_expiration_date).to eq "0220"
+    expect(expected.updated_at).to be > original_time
+    end
+
+    xit "#update cannot update id, invoice_id, or created_at" do
+      attributes = {
+        id: 5000,
+        invoice_id: 2,
+        created_at: Time.now
+      }
+      engine.transactions.update(4986, attributes)
+      expected = engine.transactions.find_by_id(5000)
+      expect(expected).to eq nil
+      expected = engine.transactions.find_by_id(4986)
+      expect(expected.invoice_id).not_to eq attributes[:invoice_id]
+      expect(expected.created_at).not_to eq attributes[:created_at]
+    end
 end
