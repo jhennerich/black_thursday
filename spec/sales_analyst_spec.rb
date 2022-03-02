@@ -83,12 +83,25 @@ context 'iteration 1' do
         expect(pending_percentage).to eq 29.55
       end
 
-      it 'checks whether invoice is paid in full' do
-        expect(@analyst.invoice_paid_in_full?(1)).to be true
+    end
+
+      context 'iteration 3' do
+        it 'checks whether invoice is paid in full' do
+          expect(@analyst.invoice_paid_in_full?(1)).to be true
+        end
+
+        it 'calculates the total $ amount of the invoice with corresponding invoice id' do
+          expect(@analyst.invoice_total(1)).to eq 21067.77
+        end
       end
 
-      it 'calculates the total $ amount of the invoice with corresponding invoice id' do
-        expect(@analyst.invoice_total(1)).to eq 21067.77
+      context 'iteration 4' do
+        it 'calculates the total revenue for a given date' do
+            date = Time.parse("2009-02-07")
+            expect(@analyst.total_revenue_by_date(date)).to eq 21067.77
+        end
+
+
+
       end
-    end
   end
