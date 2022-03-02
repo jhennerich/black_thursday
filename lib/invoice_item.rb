@@ -2,8 +2,6 @@ require 'time'
 require 'bigdecimal'
 
 class InvoiceItem
-#  attr_accessor :quantity, :unit_price, :updated_at
-#  attr_reader :id, :item_id, :invoice_id, :created_at
   attr_accessor :info
 
   def initialize(info)
@@ -31,7 +29,7 @@ class InvoiceItem
   end
 
   def unit_price
-    unit_price = BigDecimal(@info[:unit_price], 5)
+    BigDecimal(@info[:unit_price], 5)
   end
 
   def created_at
