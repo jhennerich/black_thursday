@@ -2,7 +2,6 @@ require 'time'
 require 'bigdecimal'
 
 class Invoice
-
   attr_accessor :info
 
   def initialize(info)
@@ -10,27 +9,26 @@ class Invoice
   end
 
   def id
-    id = @info[:id].to_i
+    @info[:id].to_i
   end
 
   def customer_id
-    name = @info[:customer_id].to_i
+    @info[:customer_id].to_i
   end
 
   def merchant_id
-    merchant_id = @info[:merchant_id].to_i
+    @info[:merchant_id].to_i
   end
 
   def status
-    status = @info[:status].to_sym
+    @info[:status].to_sym
   end
 
   def created_at
-    created_at = Time.parse(@info[:created_at]).utc
+    Time.parse(@info[:created_at]).utc
   end
 
   def updated_at
-    updated_at = Time.parse(@info[:updated_at]).utc
+    Time.parse(@info[:updated_at]).utc
   end
-
 end
