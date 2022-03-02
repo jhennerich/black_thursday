@@ -151,8 +151,9 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
   end
 
   def total_revenue_by_date(date)
-    @invoice_items.find_all.map {|invoice_item| invoice_item.created_at == date }
-    require 'pry'; binding.pry
+    invoice_id = @invoices.all.find_all {|invoice| invoice.created_at.to_s[0..9] == date.to_s[0..9]}[0].info[:id].to_i
+    # require 'pry'; binding.pry
+    invoice_total(invoice_id)
   end
 
 
