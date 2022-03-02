@@ -8,13 +8,14 @@ require 'pry'
 
 class SalesAnalyst
 attr_reader :item_num, :items, :merchants, :customers, :invoice_items
-  def initialize(merchants, items, invoices, invoice_items, customers)
+  def initialize(merchants, items, invoices, invoice_items, customers, transactions)
     @merchants = merchants
     @items = items
     @invoices = invoices
     @invoice_items = invoice_items
     @customers = customers
     @item_num = []
+    @transactions = transactions
     @standard_deviation = 0
   end
 
@@ -138,4 +139,17 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
     end
     ((invoice_status[status].to_f / @invoices.all.count) * 100).round(2)
   end
+
+  def invoice_paid_in_full?(invoice_id)
+    all_success = @transactions.find_all_by_invoice_id(invoice_id).map {|transaction| transaction.result}.all?(:success)
+    exist = @transactions.find_all_by_invoice_id(invoice_id).map {|transaction| transaction.result}
+    all_success && exist != []
+  end
+
+  def invoice_total(invoice_id)
+    @invoice_items.find_all_by_invoice_id(invoice_id).map{|invoice_item| invoice_item.unit_price * invoice_item.quantity}.sum
+
+  end
+
+
 end
