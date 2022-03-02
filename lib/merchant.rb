@@ -1,7 +1,6 @@
 require 'time'
 
 class Merchant
-
   attr_accessor :name, :updated_at
   attr_reader :created_at, :id
 
@@ -11,5 +10,4 @@ class Merchant
     @created_at = info[:created_at]
     @updated_at = info[:updated_at]
   end
-
 end

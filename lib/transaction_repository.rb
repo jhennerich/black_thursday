@@ -1,4 +1,3 @@
-require 'pry'
 require 'csv'
 require_relative 'repository'
 require_relative 'transaction'
@@ -26,12 +25,12 @@ class TransactionRepository < Repository
   def update(id, attributes)
     item_to_update = find_by_id(id)
     if item_to_update != nil
-        attributes.each do |key, value|
-          if ![:id, :invoice_id, :created_at].include?(key)
-            item_to_update.result = value
-            item_to_update.updated_at = (Time.now + 1)
-          end
+      attributes.each do |key, value|
+        if ![:id, :invoice_id, :created_at].include?(key)
+          item_to_update.result = value
+          item_to_update.updated_at = (Time.now + 1)
         end
+      end
     end
     item_to_update
   end

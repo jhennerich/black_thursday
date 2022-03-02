@@ -20,6 +20,7 @@ class Repository
   end
 
 #  def update(id, attribute)
+# => Attempt at global update method within repo superclass
 #    if attribute.keys.include?(:name) == true
 #      if find_by_id(id) != nil
 #        update_attribute = find_by_id(id)
@@ -63,15 +64,5 @@ class Repository
 
   def inspect
     "#<#{self.class} #{@repo_data.size} rows>"
-  end
-
-  private
-
-  def find_last_id
-    repo_data = @repo_data.sort_by do |data|
-      data.id.to_i
-    end
-    data = repo_data.last
-    data.id
   end
 end
