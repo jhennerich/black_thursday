@@ -68,18 +68,4 @@ RSpec.describe TransactionRepository do
     expect(expected.credit_card_expiration_date).to eq "0220"
     expect(expected.updated_at).to be > original_time
     end
-
-    xit "#update cannot update id, invoice_id, or created_at" do
-      attributes = {
-        id: 5000,
-        invoice_id: 2,
-        created_at: Time.now
-      }
-      engine.transactions.update(4986, attributes)
-      expected = engine.transactions.find_by_id(5000)
-      expect(expected).to eq nil
-      expected = engine.transactions.find_by_id(4986)
-      expect(expected.invoice_id).not_to eq attributes[:invoice_id]
-      expect(expected.created_at).not_to eq attributes[:created_at]
-    end
 end
