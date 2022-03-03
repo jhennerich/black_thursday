@@ -1,5 +1,5 @@
 
-![Black Thursday](./pictures/black_thursday.jpg)
+![Black Thursday](../pictures/black_thursday.jpg)
 
 ### ==========Contributors=========
 ```
