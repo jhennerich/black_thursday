@@ -141,16 +141,13 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
   end
 
   def invoice_paid_in_full?(invoice_id)
-     @transactions.find_all_by_invoice_id(invoice_id).all? {|transaction| transaction.result == :success}
+    transactions = @transactions.find_all_by_invoice_id(invoice_id)
+    transactions.any? {|transaction| transaction.result == :success} && transactions != []
   end
 
   def invoice_total(invoice_id)
-    require 'pry'; binding.pry
     @invoice_items.find_all_by_invoice_id(invoice_id).map{|invoice_item|
-
-         invoice_item.unit_price * invoice_item.quantity if invoice_paid_in_full?(invoice_id)
-
-                                                          }.sum
+         invoice_item.unit_price * invoice_item.quantity}.sum
   end
 
   def total_revenue_by_date(date)
@@ -162,24 +159,22 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
   def top_revenue_earners(x=20)
     merchant_and_revenue = Hash.new(0)
     @merchants.all.each {|merchant|
-      @invoices.find_all_by_merchant_id(merchant.id).each {|invoice|
-        if invoice_paid_in_full?(invoice.id)
-          merchant_and_revenue[merchant] += invoice_total(invoice.id)
-        end
-                                                          }
-                        }
-    top_merchants_and_revenue = merchant_and_revenue.sort_by{|k,v| v}[0..x-1]
-    top_earners = top_merchants_and_revenue.reverse.map { |tmr|
-      tmr[0]
-                }
-
-
+        invoices_by_merchant = @invoices.find_all_by_merchant_id(merchant.id)
+        invoices_by_merchant.each {|invoice| merchant_and_revenue[merchant] += invoice_total(invoice.id) if invoice_paid_in_full?(invoice.id)}
+                         }
+      top_merchants_and_revenue = merchant_and_revenue.sort_by{|k,v| v}.reverse[0..x-1]
+    top_earners = top_merchants_and_revenue.map { |tmr| tmr[0]}
   end
 
 
   def merchants_with_pending_invoices
+    pending_merchants = []
+    pending_invoices = @invoices.all.find_all{|invoice| !invoice_paid_in_full?(invoice.id)}
+    pending_invoices.each {|pending_invoice|
+      # require 'pry'; binding.pry
+      pending_merchants << @merchants.find_by_id(pending_invoice.merchant_id)
+      }
 
-
-
+    pending_merchants.uniq
   end
 end

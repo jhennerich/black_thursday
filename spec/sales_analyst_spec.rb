@@ -107,7 +107,7 @@ context 'iteration 1' do
         end
 
         it 'returns merchants with pending invoices' do
-          expect(@analyst.merchants_with_pending_invoices.length).to eq 
+          expect(@analyst.merchants_with_pending_invoices.length).to eq 467
 
         end
       end
