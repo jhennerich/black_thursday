@@ -141,13 +141,16 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
   end
 
   def invoice_paid_in_full?(invoice_id)
-    all_success = @transactions.find_all_by_invoice_id(invoice_id).map {|transaction| transaction.result}.all?(:success)
-    exist = @transactions.find_all_by_invoice_id(invoice_id).map {|transaction| transaction.result}
-    all_success && exist != []
+     @transactions.find_all_by_invoice_id(invoice_id).all? {|transaction| transaction.result == :success}
   end
 
   def invoice_total(invoice_id)
-    @invoice_items.find_all_by_invoice_id(invoice_id).map{|invoice_item| invoice_item.unit_price * invoice_item.quantity}.sum
+    require 'pry'; binding.pry
+    @invoice_items.find_all_by_invoice_id(invoice_id).map{|invoice_item|
+
+         invoice_item.unit_price * invoice_item.quantity if invoice_paid_in_full?(invoice_id)
+
+                                                          }.sum
   end
 
   def total_revenue_by_date(date)
@@ -166,8 +169,17 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
                                                           }
                         }
     top_merchants_and_revenue = merchant_and_revenue.sort_by{|k,v| v}[0..x-1]
-    top_merchants_and_revenue.map { |tmr|
+    top_earners = top_merchants_and_revenue.reverse.map { |tmr|
       tmr[0]
                 }
+
+
+  end
+
+
+  def merchants_with_pending_invoices
+
+
+
   end
 end

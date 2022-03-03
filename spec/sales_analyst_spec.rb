@@ -106,5 +106,9 @@ context 'iteration 1' do
           expect(@analyst.top_revenue_earners.sample).to be_a Merchant
         end
 
+        it 'returns merchants with pending invoices' do
+          expect(@analyst.merchants_with_pending_invoices.length).to eq 
+
+        end
       end
   end
