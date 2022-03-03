@@ -174,7 +174,22 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
       # require 'pry'; binding.pry
       pending_merchants << @merchants.find_by_id(pending_invoice.merchant_id)
       }
-
     pending_merchants.uniq
   end
+
+
+  def merchants_with_only_one_item
+    merchants_with_one_item = []
+    @items.all.each {|item|
+      if @items.find_all_by_merchant_id(item.merchant_id).length == 1
+        merchants_with_one_item << @merchants.find_by_id(item.merchant_id)
+      end
+                    }
+      merchants_with_one_item.uniq
+  end
+
+
+  # def merchants_with_only_one_item_registered_in_month("Month name")
+  #
+  # end
 end

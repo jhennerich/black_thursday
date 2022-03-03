@@ -108,6 +108,14 @@ context 'iteration 1' do
 
         it 'returns merchants with pending invoices' do
           expect(@analyst.merchants_with_pending_invoices.length).to eq 467
+        end
+
+        it 'returns merchants selling only one item' do
+          expect(@analyst.merchants_with_only_one_item.length).to eq 243
+        end
+
+        xit 'find merchants with only one item registered in a given month' do
+
 
         end
       end
