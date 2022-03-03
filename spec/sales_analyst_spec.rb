@@ -117,5 +117,10 @@ context 'iteration 1' do
         it 'find merchants with only one item registered in a given month' do
           expect(@analyst.merchants_with_only_one_item_registered_in_month("March").length).to eq 21
         end
+
+        it 'returns the revenue of a given merchant' do
+          expected = @analyst.revenue_by_merchant(12334194)
+          expect(expected).to eq expected
+        end
       end
   end

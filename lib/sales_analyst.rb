@@ -195,8 +195,13 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
     }
   end
 
-
-
+  def revenue_by_merchant(merchant_id)
+    merchant_revenue = 0
+    invoices_by_merchant = @invoices.find_all_by_merchant_id(merchant_id)
+    invoices_by_merchant.each {|invoice| merchant_revenue += invoice_total(invoice.id) if invoice_paid_in_full?(invoice.id)}
+              
+    merchant_revenue
+  end
 
 
 
