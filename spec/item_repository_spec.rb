@@ -14,7 +14,7 @@ RSpec.describe ItemRepository do
     expect(@items).to be_a(ItemRepository)
   end
 
-  it "holds #all merchant data" do
+  it "holds #all item repo data" do
     expect(@items.all.count).to eq(1367)
   end
 
