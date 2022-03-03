@@ -189,7 +189,15 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
   end
 
 
-  # def merchants_with_only_one_item_registered_in_month("Month name")
-  #
-  # end
+  def merchants_with_only_one_item_registered_in_month(month_name)
+    merchants_with_only_one_item.find_all{|merchant|
+      Time.parse(merchant.created_at).strftime("%B") == month_name
+    }
+  end
+
+
+
+
+
+
 end

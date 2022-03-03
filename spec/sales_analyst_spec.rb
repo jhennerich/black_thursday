@@ -114,9 +114,8 @@ context 'iteration 1' do
           expect(@analyst.merchants_with_only_one_item.length).to eq 243
         end
 
-        xit 'find merchants with only one item registered in a given month' do
-
-
+        it 'find merchants with only one item registered in a given month' do
+          expect(@analyst.merchants_with_only_one_item_registered_in_month("March").length).to eq 21
         end
       end
   end
