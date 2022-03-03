@@ -141,15 +141,68 @@ attr_reader :item_num, :items, :merchants, :customers, :invoice_items
   end
 
   def invoice_paid_in_full?(invoice_id)
-    all_success = @transactions.find_all_by_invoice_id(invoice_id).map {|transaction| transaction.result}.all?(:success)
-    exist = @transactions.find_all_by_invoice_id(invoice_id).map {|transaction| transaction.result}
-    all_success && exist != []
+    transactions = @transactions.find_all_by_invoice_id(invoice_id)
+    transactions.any? {|transaction| transaction.result == :success} && transactions != []
   end
 
   def invoice_total(invoice_id)
-    @invoice_items.find_all_by_invoice_id(invoice_id).map{|invoice_item| invoice_item.unit_price * invoice_item.quantity}.sum
-
+    @invoice_items.find_all_by_invoice_id(invoice_id).map{|invoice_item|
+         invoice_item.unit_price * invoice_item.quantity}.sum
   end
+
+  def total_revenue_by_date(date)
+    invoice_id = @invoices.all.find_all {|invoice| invoice.created_at.to_s[0..9] == date.to_s[0..9]}[0].info[:id].to_i
+    invoice_total(invoice_id)
+  end
+
+
+  def top_revenue_earners(x=20)
+    merchant_and_revenue = Hash.new(0)
+    @merchants.all.each {|merchant|
+        invoices_by_merchant = @invoices.find_all_by_merchant_id(merchant.id)
+        invoices_by_merchant.each {|invoice| merchant_and_revenue[merchant] += invoice_total(invoice.id) if invoice_paid_in_full?(invoice.id)}
+                         }
+      top_merchants_and_revenue = merchant_and_revenue.sort_by{|k,v| v}.reverse[0..x-1]
+    top_earners = top_merchants_and_revenue.map { |tmr| tmr[0]}
+  end
+
+
+  def merchants_with_pending_invoices
+    pending_merchants = []
+    pending_invoices = @invoices.all.find_all{|invoice| !invoice_paid_in_full?(invoice.id)}
+    pending_invoices.each {|pending_invoice|
+      # require 'pry'; binding.pry
+      pending_merchants << @merchants.find_by_id(pending_invoice.merchant_id)
+      }
+    pending_merchants.uniq
+  end
+
+
+  def merchants_with_only_one_item
+    merchants_with_one_item = []
+    @items.all.each {|item|
+      if @items.find_all_by_merchant_id(item.merchant_id).length == 1
+        merchants_with_one_item << @merchants.find_by_id(item.merchant_id)
+      end
+                    }
+      merchants_with_one_item.uniq
+  end
+
+
+  def merchants_with_only_one_item_registered_in_month(month_name)
+    merchants_with_only_one_item.find_all{|merchant|
+      Time.parse(merchant.created_at).strftime("%B") == month_name
+    }
+  end
+
+  def revenue_by_merchant(merchant_id)
+    merchant_revenue = 0
+    invoices_by_merchant = @invoices.find_all_by_merchant_id(merchant_id)
+    invoices_by_merchant.each {|invoice| merchant_revenue += invoice_total(invoice.id) if invoice_paid_in_full?(invoice.id)}
+              
+    merchant_revenue
+  end
+
 
 
 end

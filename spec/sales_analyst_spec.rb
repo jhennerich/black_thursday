@@ -83,12 +83,44 @@ context 'iteration 1' do
         expect(pending_percentage).to eq 29.55
       end
 
-      it 'checks whether invoice is paid in full' do
-        expect(@analyst.invoice_paid_in_full?(1)).to be true
+    end
+
+      context 'iteration 3' do
+        it 'checks whether invoice is paid in full' do
+          expect(@analyst.invoice_paid_in_full?(1)).to be true
+        end
+
+        it 'calculates the total $ amount of the invoice with corresponding invoice id' do
+          expect(@analyst.invoice_total(1)).to eq 21067.77
+        end
       end
 
-      it 'calculates the total $ amount of the invoice with corresponding invoice id' do
-        expect(@analyst.invoice_total(1)).to eq 21067.77
+      context 'iteration 4' do
+        it 'calculates the total revenue for a given date' do
+            date = Time.parse("2009-02-07")
+            expect(@analyst.total_revenue_by_date(date)).to eq 21067.77
+        end
+
+        it 'returns the top x merchants ranked by revenue' do
+          expect(@analyst.top_revenue_earners(10).length).to eq 10
+          expect(@analyst.top_revenue_earners.sample).to be_a Merchant
+        end
+
+        it 'returns merchants with pending invoices' do
+          expect(@analyst.merchants_with_pending_invoices.length).to eq 467
+        end
+
+        it 'returns merchants selling only one item' do
+          expect(@analyst.merchants_with_only_one_item.length).to eq 243
+        end
+
+        it 'find merchants with only one item registered in a given month' do
+          expect(@analyst.merchants_with_only_one_item_registered_in_month("March").length).to eq 21
+        end
+
+        it 'returns the revenue of a given merchant' do
+          expected = @analyst.revenue_by_merchant(12334194)
+          expect(expected).to eq expected
+        end
       end
-    end
   end
